@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Service History - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="service-history-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>📜 Service History</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back</a>
+        </div>
+
+        {% if history %}
+            <div class="section">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Problem</th>
+                            <th>Staff</th>
+                            <th>Status</th>
+                            <th>Completed At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in history %}
+                        <tr>
+                            <td>#{{ item.id }}</td>
+                            <td>{{ item.user_name }}</td>
+                            <td>{{ item.problem_type }}</td>
+                            <td>{{ item.staff_display_name }}</td>
+                            <td><span class="status status-{{ item.status }}">{{ item.status }}</span></td>
+                            <td>{{ item.completed_at or item.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-data-box">
+                <h3>No service history</h3>
+                <p>No completed services yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

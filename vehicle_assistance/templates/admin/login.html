@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "_auth_macros.html" import credential_field, password_field %}
+{% block extra_css %}
+<style>
+.auth-box { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px); }
+.admin-badge { background: rgba(255, 255, 255, 0.3); }
+</style>
+{% endblock %}
+
+{% block title %}Admin Login - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="admin-badge">
+            <span class="admin-icon">👑</span>
+        </div>
+        <h2>Admin Login</h2>
+        <p class="auth-subtitle">Access administrative dashboard</p>
+        <form method="POST" action="{{ url_for('admin_login') }}" id="adminLoginForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            {{ credential_field('username', 'username', 'Username', 'Enter admin username', 'username-error') }}
+            {{ password_field(placeholder='Enter password') }}
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <div class="auth-links">
+            <p><a href="{{ url_for('user_login') }}">User Login</a> | <a href="{{ url_for('staff_login') }}">Staff Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

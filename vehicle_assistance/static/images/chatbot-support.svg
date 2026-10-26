@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#f0f3ff" rx="15"/>
+  
+  <!-- Chat bubble 1 -->
+  <rect x="20" y="40" width="100" height="50" fill="#4361ee" rx="15"/>
+  <polygon points="30,90 20,110 50,90" fill="#4361ee"/>
+  
+  <!-- Chat bubble 2 -->
+  <rect x="80" y="100" width="100" height="50" fill="#06d6a0" rx="15"/>
+  <polygon points="180,150 200,170 170,150" fill="#06d6a0"/>
+  
+  <!-- Text lines in bubble 1 -->
+  <rect x="30" y="50" width="30" height="4" fill="white" rx="2"/>
+  <rect x="30" y="60" width="50" height="4" fill="white" rx="2"/>
+  <rect x="30" y="70" width="40" height="4" fill="white" rx="2"/>
+  
+  <!-- Text lines in bubble 2 -->
+  <rect x="90" y="110" width="35" height="4" fill="white" rx="2"/>
+  <rect x="90" y="120" width="60" height="4" fill="white" rx="2"/>
+  <rect x="90" y="130" width="45" height="4" fill="white" rx="2"/>
+  
+  <!-- Robot icon (small) -->
+  <g transform="translate(160, 150)">
+    <circle cx="0" cy="0" r="15" fill="#7209b7"/>
+    <circle cx="-5" cy="-3" r="2" fill="white"/>
+    <circle cx="5" cy="-3" r="2" fill="white"/>
+    <line x1="-3" y1="3" x2="3" y2="3" stroke="white" stroke-width="1"/>
+  </g>
+</svg>

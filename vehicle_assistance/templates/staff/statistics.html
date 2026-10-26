@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="statistics-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>📊 My Statistics</h1>
+            <a href="{{ url_for('staff_dashboard') }}" class="btn btn-secondary">← Back</a>
+        </div>
+
+        <div class="stats-overview">
+            <div class="stat-card large">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <h2>{{ stats.total if stats else 0 }}</h2>
+                    <p>Total Jobs</p>
+                </div>
+            </div>
+            <div class="stat-card large">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h2>{{ stats.accepted if stats else 0 }}</h2>
+                    <p>In Progress</p>
+                </div>
+            </div>
+            <div class="stat-card large">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h2>{{ stats.completed if stats else 0 }}</h2>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Recent Completed Jobs</h2>
+            {% set completed_jobs = jobs|selectattr('status', 'equalto', 'completed')|list %}
+            {% if completed_jobs %}
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Problem Type</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in completed_jobs[:10] %}
+                        <tr>
+                            <td>#{{ job.id }}</td>
+                            <td>{{ job.problem_type }}</td>
+                            <td>{{ job.user_name }}</td>
+                            <td>{{ job.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="no-data">No completed jobs yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

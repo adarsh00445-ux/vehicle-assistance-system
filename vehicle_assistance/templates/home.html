@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+body.home .hero { background: transparent !important; }
+</style>
+{% endblock %}
+
+{% block title %}Home - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>🚗 Vehicle Breakdown Assistance</h1>
+            <p>Your trusted partner for instant vehicle repairs and roadside assistance</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('user_register') }}" class="btn btn-primary">Get Started</a>
+                <a href="{{ url_for('user_login') }}" class="btn btn-secondary">Login</a>
+            </div>
+        </div>
+    
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Our Services</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <img src="{{ url_for('static', filename='images/expert-mechanic.svg') }}" alt="Expert Mechanics" class="feature-image">
+                <h3>Expert Mechanics</h3>
+                <p>Certified professionals ready to help 24/7</p>
+            </div>
+            <div class="feature-card">
+                <img src="{{ url_for('static', filename='images/fast-service.svg') }}" alt="Quick Response" class="feature-image">
+                <h3>Quick Response</h3>
+                <p>Fast service when you need it most</p>
+            </div>
+            <div class="feature-card">
+                <img src="{{ url_for('static', filename='images/location-service.svg') }}" alt="Doorstep Service" class="feature-image">
+                <h3>Doorstep Service</h3>
+                <p>We come to your location</p>
+            </div>
+            <div class="feature-card">
+                <img src="{{ url_for('static', filename='images/chatbot-support.svg') }}" alt="AI Assistant" class="feature-image">
+                <h3>AI Assistant</h3>
+                <p>24/7 chatbot support for queries</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Need Immediate Assistance?</h2>
+        <p>Book a mechanic now and get help within minutes</p>
+        <a href="{{ url_for('user_register') }}" class="btn btn-large">Book Now</a>
+    </div>
+</section>
+{% endblock %}

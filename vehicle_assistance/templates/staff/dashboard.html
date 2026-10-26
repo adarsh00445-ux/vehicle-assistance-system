@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+.dashboard-container { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(15px); }
+</style>
+{% endblock %}
+
+{% block title %}Staff Dashboard - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Welcome, {{ name }}!</h1>
+            <a href="{{ url_for('staff_my_jobs') }}" class="btn btn-primary">View My Jobs</a>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total if stats else 0 }}</h3>
+                    <p>Total Jobs</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h3>{{ stats.accepted if stats else 0 }}</h3>
+                    <p>In Progress</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3>{{ stats.completed if stats else 0 }}</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🆕 Available Jobs (Pending)</h2>
+            {% if bookings %}
+                <div class="jobs-list">
+                    {% for booking in bookings %}
+                    <div class="job-card">
+                        <div class="job-header">
+                            <h3>{{ booking.problem_type }}</h3>
+                            <span class="badge badge-new">New</span>
+                        </div>
+                        <div class="job-body">
+                            <p><strong>📍 Address:</strong> {{ booking.address }}</p>
+                            <p><strong>📞 Contact:</strong> {{ booking.registered_phone or booking.user_phone }}</p>
+                            <p><strong>👤 Customer:</strong> {{ booking.user_name }}</p>
+                            {% if booking.description %}
+                                <p><strong>📝 Description:</strong> {{ booking.description }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="job-footer">
+                            <form method="POST" action="{{ url_for('staff_accept', booking_id=booking.id) }}"
+                                  data-confirm="Accept this job?">
+                                <button type="submit" class="btn btn-success">✅ Accept Job</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-data">No pending jobs available right now.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#f0f3ff" rx="15"/>
+  
+  <!-- Map background -->
+  <rect x="30" y="40" width="140" height="120" fill="#e9ecef" rx="8"/>
+  
+  <!-- Location pin -->
+  <g transform="translate(100, 80)">
+    <!-- Pin body -->
+    <path d="M 0 -30 C -16.5 -30 -30 -16.5 -30 0 C -30 15 0 35 0 35 C 0 35 30 15 30 0 C 30 -16.5 16.5 -30 0 -30 Z" fill="#f72585"/>
+    
+    <!-- Inner circle -->
+    <circle cx="0" cy="0" r="12" fill="white"/>
+    <circle cx="0" cy="0" r="8" fill="#f72585"/>
+  </g>
+  
+  <!-- Road lines -->
+  <line x1="40" y1="140" x2="160" y2="140" stroke="#4361ee" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="40" y1="155" x2="160" y2="155" stroke="#4361ee" stroke-width="2" stroke-dasharray="5,5"/>
+</svg>

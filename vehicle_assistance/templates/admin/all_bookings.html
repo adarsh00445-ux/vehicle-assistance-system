@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}All Bookings - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="admin-bookings-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>📋 All Bookings</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back</a>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="tab-btn active" data-filter="all">All</button>
+            <button class="tab-btn" data-filter="pending">Pending</button>
+            <button class="tab-btn" data-filter="accepted">Accepted</button>
+            <button class="tab-btn" data-filter="completed">Completed</button>
+            <button class="tab-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+
+        <div class="table-tools">
+            <input type="text" class="table-search" placeholder="Search customer, problem, address"
+                   data-search-target="#bookingTableBody">
+        </div>
+
+        {% if bookings %}
+            <div class="bookings-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Problem</th>
+                            <th>Address</th>
+                            <th>Staff</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingTableBody">
+                        {% for booking in bookings %}
+                        <tr class="booking-row" data-status="{{ booking.status }}" data-search-item>
+                            <td>#{{ booking.id }}</td>
+                            <td>{{ booking.user_name }}</td>
+                            <td>{{ booking.problem_type }}</td>
+                            <td>{{ booking.address[:40] }}</td>
+                            <td>{{ booking.staff_display_name }}</td>
+                            <td>
+                                <span class="status status-{{ booking.status }}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>{{ booking.created_at }}</td>
+                            <td>
+                                {% if booking.status in ['pending', 'accepted'] %}
+                                    <form method="POST"
+                                          action="{{ url_for('admin_cancel_booking', booking_id=booking.id) }}"
+                                          style="display:inline;">
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm"
+                                                data-confirm="Are you sure you want to cancel this booking?">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                {% elif booking.status == 'cancelled' %}
+                                    <span class="badge badge-danger">Cancelled</span>
+                                {% elif booking.status == 'completed' %}
+                                    <span class="badge badge-success">Completed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-data-box">
+                <p>No bookings found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.booking-row').forEach(row => {
+            if (filter === 'all' || row.dataset.status === filter) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

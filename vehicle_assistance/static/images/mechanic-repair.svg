@@ -1,0 +1,29 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f0f3ff"/>
+  
+  <!-- Car -->
+  <rect x="80" y="200" width="240" height="100" rx="10" fill="#333"/>
+  <circle cx="120" cy="280" r="25" fill="#222"/>
+  <circle cx="320" cy="280" r="25" fill="#222"/>
+  <rect x="100" y="180" width="200" height="40" fill="#4361ee" rx="5"/>
+  
+  <!-- Mechanic body -->
+  <circle cx="200" cy="80" r="25" fill="#f4a261"/>
+  <rect x="180" y="110" width="40" height="50" fill="#ff6b6b"/>
+  <rect x="175" y="115" width="15" height="60" fill="#f4a261"/>
+  <rect x="210" y="115" width="15" height="60" fill="#f4a261"/>
+  <rect x="170" y="165" width="15" height="40" fill="#333"/>
+  <rect x="215" y="165" width="15" height="40" fill="#333"/>
+  
+  <!-- Wrench in hand -->
+  <g transform="translate(150, 130)">
+    <rect x="0" y="0" width="8" height="50" fill="#888" rx="4"/>
+    <circle cx="4" cy="55" r="12" fill="#888"/>
+  </g>
+  
+  <!-- Sparks/motion lines -->
+  <circle cx="280" cy="150" r="4" fill="#4361ee"/>
+  <circle cx="290" cy="140" r="3" fill="#7209b7"/>
+  <circle cx="270" cy="145" r="3" fill="#f72585"/>
+</svg>

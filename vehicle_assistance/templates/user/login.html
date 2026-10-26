@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_auth_macros.html" import credential_field, password_field %}
+{% block extra_css %}
+<style>
+.auth-box { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px); }
+</style>
+{% endblock %}
+
+{% block title %}User Login - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>User Login</h2>
+        <p class="auth-subtitle">Welcome back! Please login to your account</p>
+        <form method="POST" action="{{ url_for('user_login') }}" id="loginForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            {{ credential_field('email_or_phone', 'email_or_phone', 'Email or Phone Number', 'Enter email or 10-digit phone', 'email-error') }}
+            {{ password_field() }}
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <div class="auth-links">
+            <p>Don't have an account? <a href="{{ url_for('user_register') }}">Register here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

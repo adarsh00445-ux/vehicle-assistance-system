@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}My Jobs - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="jobs-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>My Jobs</h1>
+            <a href="{{ url_for('staff_dashboard') }}" class="btn btn-secondary">← Back</a>
+        </div>
+
+        <div class="filter-tabs">
+            <button type="button" class="tab-btn active" data-filter="all">All <span class="count">{{ total_jobs }}</span></button>
+            <button type="button" class="tab-btn" data-filter="accepted">In Progress <span class="count">{{ accepted_jobs }}</span></button>
+            <button type="button" class="tab-btn" data-filter="completed">Completed <span class="count">{{ completed_jobs }}</span></button>
+        </div>
+
+        {% if jobs %}
+            <div class="jobs-list">
+                {% for job in jobs %}
+                {% set job_status = (job.status or '')|lower %}
+                <div class="job-card" data-status="{{ job_status }}">
+                    <div class="job-header">
+                        <h3>{{ job.problem_type }}</h3>
+                        <span class="status status-{{ job_status }}">{{ job_status|title }}</span>
+                    </div>
+                    <div class="job-body">
+                        <!-- BOOKING STATUS: Show only name + address -->
+                        {% if job_status == 'pending' %}
+                            <p><strong>👤 Customer Name:</strong> {{ job.user_name }}</p>
+                            <p><strong>📍 Address:</strong> {{ job.address }}</p>
+                        
+                        <!-- ACCEPTED STATUS: Show full details -->
+                        {% elif job_status == 'accepted' %}
+                            <p><strong>👤 Customer Name:</strong> {{ job.user_name }}</p>
+                            <p><strong>📍 Address:</strong> {{ job.address }}</p>
+                            <p><strong>📞 Registered Phone:</strong> {{ job.registered_phone }}</p>
+                            {% if job.alternate_phone %}
+                                <p><strong>📞 Alternate Phone:</strong> {{ job.alternate_phone }}</p>
+                            {% endif %}
+                            <p><strong> Problem:</strong> {{ job.problem_type }}</p>
+                            {% if job.description %}
+                                <p><strong>📝 Description:</strong> {{ job.description }}</p>
+                            {% endif %}
+                            
+                            <!-- DETAILED ADDRESS SECTION -->
+                            {% if job.address %}
+                                <div class="address-section">
+                                    <p><strong>📍 Service Location:</strong></p>
+                                    <div class="address-display">
+                                        {{ job.address }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        
+                        <!-- COMPLETED STATUS: Show only name + problem -->
+                        {% elif job_status == 'completed' %}
+                            <p><strong>👤 Customer Name:</strong> {{ job.user_name }}</p>
+                            <p><strong>🔧 Problem:</strong> {{ job.problem_type }}</p>
+                        
+                        {% endif %}
+                    </div>
+                    <div class="job-footer">
+                        {% if job_status == 'accepted' %}
+                                                        <form method="POST" action="{{ url_for('staff_resolve', booking_id=job.id) }}"
+                                                                    class="job-action-form">
+                                                                <button type="submit" class="btn btn-primary btn-lg">📧 Send Completion OTP</button>
+                                                        </form>
+
+                            <form method="POST" action="{{ url_for('staff_complete', booking_id=job.id) }}"
+                                                                    class="job-action-form otp-form">
+                                                                <input type="text" name="otp" placeholder="Enter OTP"
+                                                                             maxlength="6" required class="otp-input">
+                                                                <button type="submit" class="btn btn-success btn-lg">✅ Complete</button>
+                            </form>
+                            
+                            <form method="POST" action="{{ url_for('staff_cancel_job', booking_id=job.id) }}"
+                                                                    class="job-action-form cancel-form"
+                                  data-confirm="Cancel this job? It will become available for other staff.">
+                                                                <button type="submit" class="btn btn-warning btn-lg">❌ Cancel Job</button>
+                            </form>
+                            
+                        {% elif job_status == 'completed' %}
+                            <span class="badge badge-active">✅ Service Completed</span>
+                        {% elif job_status == 'pending' %}
+                            <span class="badge badge-pending">⏳ Waiting for acceptance</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-jobs">
+                <h3>No jobs yet</h3>
+                <p>You haven't accepted any jobs yet.</p>
+                <a href="{{ url_for('staff_dashboard') }}" class="btn btn-primary">View Available Jobs</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = (this.dataset.filter || '').toLowerCase();
+        document.querySelectorAll('.job-card').forEach(card => {
+            const cardStatus = (card.dataset.status || '').toLowerCase();
+            if (filter === 'all' || cardStatus === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

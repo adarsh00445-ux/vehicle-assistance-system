@@ -1,0 +1,28 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#f0f3ff" rx="15"/>
+  
+  <!-- Mechanic head -->
+  <circle cx="100" cy="50" r="20" fill="#f4a261"/>
+  
+  <!-- Mechanic body -->
+  <rect x="85" y="75" width="30" height="40" fill="#ff6b6b" rx="3"/>
+  
+  <!-- Arms -->
+  <rect x="60" y="80" width="25" height="12" fill="#f4a261" rx="6"/>
+  <rect x="115" y="80" width="25" height="12" fill="#f4a261" rx="6"/>
+  
+  <!-- Legs -->
+  <rect x="90" y="120" width="8" height="30" fill="#333"/>
+  <rect x="102" y="120" width="8" height="30" fill="#333"/>
+  
+  <!-- Wrench -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="0" width="6" height="35" fill="#888" rx="3"/>
+    <circle cx="3" cy="40" r="10" fill="#888"/>
+  </g>
+  
+  <!-- Certificate badge -->
+  <rect x="130" y="110" width="40" height="40" fill="#06d6a0" rx="5"/>
+  <text x="150" y="135" font-size="24" text-anchor="middle" fill="white">✓</text>
+</svg>

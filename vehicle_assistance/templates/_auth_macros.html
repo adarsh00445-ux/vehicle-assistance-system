@@ -1,0 +1,23 @@
+{% macro credential_field(id, name, label, placeholder, error_id) -%}
+<div class="form-group">
+    <label for="{{ id }}">{{ label }}</label>
+    <input type="text" id="{{ id }}" name="{{ name }}" placeholder="{{ placeholder }}" required>
+    <span class="error-message" id="{{ error_id }}"></span>
+</div>
+{%- endmacro %}
+
+{% macro password_field(id='password', name='password', label='Password', placeholder='Enter your password', error_id='password-error') -%}
+<div class="form-group">
+    <label for="{{ id }}">{{ label }}</label>
+    <input type="password" id="{{ id }}" name="{{ name }}" placeholder="{{ placeholder }}" required>
+    <span class="error-message" id="{{ error_id }}"></span>
+</div>
+{%- endmacro %}
+
+{% macro otp_field(id='otp', name='otp', label='Enter OTP', placeholder='Enter 6-digit OTP', error_id='otp-error') -%}
+<div class="form-group">
+    <label for="{{ id }}">{{ label }}</label>
+    <input type="text" id="{{ id }}" name="{{ name }}" maxlength="6" pattern="[0-9]{6}" placeholder="{{ placeholder }}" required autofocus>
+    <span class="error-message" id="{{ error_id }}"></span>
+</div>
+{%- endmacro %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="bookings-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>My Bookings</h1>
+            <a href="{{ url_for('user_book_mechanic') }}" class="btn btn-primary">+ New Booking</a>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="tab-btn active" data-filter="all">All</button>
+            <button class="tab-btn" data-filter="pending">Pending</button>
+            <button class="tab-btn" data-filter="accepted">Accepted</button>
+            <button class="tab-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <div class="table-tools">
+            <input type="text" class="table-search" placeholder="Search by issue, status or address"
+                   data-search-target=".bookings-grid">
+        </div>
+
+        {% if bookings %}
+            <div class="bookings-grid">
+                {% for booking in bookings %}
+                <div class="booking-card" data-status="{{ booking.status }}" data-search-item>
+                    <div class="booking-header">
+                        <h3>{{ booking.problem_type }}</h3>
+                        <span class="status status-{{ booking.status }}">{{ booking.status }}</span>
+                    </div>
+                    <div class="booking-body">
+                        <!-- PENDING BOOKING: Only problem visible -->
+                        {% if booking.status == 'pending' %}
+                            <p><strong>📍 Address:</strong> {{ booking.address }}</p>
+                            <p><strong>🔧 Problem:</strong> {{ booking.problem_type }}</p>
+                        
+                        <!-- ACCEPTED BOOKING: Show full details + staff info -->
+                        {% elif booking.status == 'accepted' %}
+                            <p><strong>📍 Address:</strong> {{ booking.address }}</p>
+                            <p><strong>📞 Registered Phone:</strong> {{ booking.registered_phone }}</p>
+                            {% if booking.alternate_phone %}
+                                <p><strong>📞 Alternate Phone:</strong> {{ booking.alternate_phone }}</p>
+                            {% endif %}
+                            <p><strong>🔧 Problem:</strong> {{ booking.problem_type }}</p>
+                            {% if booking.description %}
+                                <p><strong>📝 Description:</strong> {{ booking.problem_description }}</p>
+                            {% endif %}
+                            
+                            <!-- MECHANIC INFO SECTION - Show staff details -->
+                            {% if booking.mechanic_name %}
+                            <div class="mechanic-section">
+                                <p><strong>👨‍🔧 Your Assigned Mechanic:</strong></p>
+                                <div class="mechanic-card">
+                                    <p><strong>Name:</strong> {{ booking.mechanic_name }}</p>
+                                    <p><strong>📞 Mobile:</strong> {{ booking.mechanic_phone }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        
+                        <!-- COMPLETED BOOKING: Only problem shown -->
+                        {% elif booking.status == 'completed' %}
+                            <p><strong>🔧 Problem:</strong> {{ booking.problem_type }}</p>
+                            <p><strong>✅ Completed on:</strong> {{ booking.completed_at }}</p>
+                        
+                        <!-- DEFAULT: Show all details -->
+                        {% else %}
+                            <p><strong>📍 Address:</strong> {{ booking.address }}</p>
+                            <p><strong>📞 Registered Phone:</strong> {{ booking.registered_phone }}</p>
+                            {% if booking.alternate_phone %}
+                                <p><strong>📞 Alternate Phone:</strong> {{ booking.alternate_phone }}</p>
+                            {% endif %}
+                            <p><strong>📅 Date:</strong> {{ booking.created_at }}</p>
+                            {% if booking.description %}
+                                <p><strong>📝 Description:</strong> {{ booking.problem_description }}</p>
+                            {% endif %}
+                        {% endif %}
+                        
+                    </div>
+                    
+                    <div class="booking-footer">
+                        <!-- Cancel button for pending and accepted bookings -->
+                        {% if booking.status in ['pending', 'accepted'] %}
+                            <form method="POST" action="{{ url_for('user_cancel_booking', booking_id=booking.id) }}"
+                                  style="display: inline;"
+                                  data-confirm="Are you sure you want to cancel this booking?">
+                                <button type="submit" class="btn btn-warning">Cancel Booking</button>
+                            </form>
+                        {% elif booking.status == 'completed' %}
+                            <span class="badge badge-active">✅ Service Completed</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-bookings">
+                <h3>No bookings yet</h3>
+                <p>You haven't made any bookings yet.</p>
+                <a href="{{ url_for('user_book_mechanic') }}" class="btn btn-primary">Book Now</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.booking-card').forEach(card => {
+            if (filter === 'all' || card.dataset.status === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

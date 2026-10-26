@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+.dashboard-container { background: rgba(222, 247, 255, 0.97); backdrop-filter: blur(15px); }
+</style>
+{% endblock %}
+
+{% block title %}User Dashboard - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Welcome, {{ name }}!</h1>
+            <a href="{{ url_for('user_book_mechanic') }}" class="btn btn-primary">🔧 Book a Mechanic</a>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-info">
+                    <h3>{{ bookings|length }}</h3>
+                    <p>Total Bookings</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h3>{{ bookings|selectattr('status', 'equalto', 'pending')|list|length }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3>{{ bookings|selectattr('status', 'equalto', 'completed')|list|length }}</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Recent Bookings</h2>
+                <a href="{{ url_for('user_my_bookings') }}" class="view-all">View All →</a>
+            </div>
+
+            {% if bookings %}
+                <div class="bookings-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Problem Type</th>
+                                <th>Address</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td>#{{ booking.id }}</td>
+                                <td>{{ booking.problem_type }}</td>
+                                <td>{{ booking.address[:30] }}...</td>
+                                <td><span class="status status-{{ booking.status }}">{{ booking.status }}</span></td>
+                                <td>{{ booking.created_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-data">No bookings yet. <a href="{{ url_for('user_book_mechanic') }}">Book your first service!</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="chatbot-widget" id="chatbotWidget">
+    <button class="chatbot-toggle" id="chatToggle" type="button">
+        <span class="chat-icon">💬</span>
+        <span class="chat-tooltip">Chat with AI</span>
+    </button>
+
+    <div class="chatbot-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <span class="bot-avatar">🤖</span>
+                <div>
+                    <h3>AI Assistant</h3>
+                    <span class="chat-status"><span class="status-dot"></span> Online</span>
+                </div>
+            </div>
+            <button class="chat-close" id="chatClose" type="button">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <p>Hello {{ name }}! 👋 How can I help you today?</p>
+                <span class="message-time">Just now</span>
+            </div>
+            <div class="quick-replies">
+                <button class="quick-reply-btn" onclick="sendQuickReply('What services do you offer?')">Services</button>
+                <button class="quick-reply-btn" onclick="window.location.href='/user/book-mechanic'">Book Mechanic</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('My car is not starting')">Emergency Help</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('Track my booking')">Track Booking</button>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type your message..." autocomplete="off">
+            <button id="chatSend" type="button">
+                <span>➤</span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style>
+.admin-dashboard, .dashboard-container { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(15px); }
+</style>
+{% endblock %}
+
+{% block title %}Admin Dashboard - Vehicle Assistance System{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>👑 Admin Dashboard</h1>
+            <div class="header-actions">
+                <a href="{{ url_for('admin_register_staff') }}" class="btn btn-primary">+ Add Staff</a>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_users if stats else 0 }}</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔧</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_staff if stats else 0 }}</h3>
+                    <p>Total Staff</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_bookings if stats else 0 }}</h3>
+                    <p>Total Bookings</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h3>{{ stats.pending_bookings if stats else 0 }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3>{{ stats.completed_bookings if stats else 0 }}</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="quick-links">
+                <a href="{{ url_for('admin_view_staff') }}" class="quick-link-card">
+                    <span class="icon">👨‍🔧</span>
+                    <span>View Staff</span>
+                </a>
+                <a href="{{ url_for('admin_all_bookings') }}" class="quick-link-card">
+                    <span class="icon">📋</span>
+                    <span>All Bookings</span>
+                </a>
+                <a href="{{ url_for('admin_service_history') }}" class="quick-link-card">
+                    <span class="icon">📜</span>
+                    <span>Service History</span>
+                </a>
+                <a href="{{ url_for('admin_register_staff') }}" class="quick-link-card">
+                    <span class="icon">➕</span>
+                    <span>Add Staff</span>
+                </a>
+                <a href="{{ url_for('export_all_bookings_csv') }}" class="quick-link-card">
+                    <span class="icon">⬇️</span>
+                    <span>Export All Bookings CSV</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.quick-link-card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    color: var(--gray-800);
+}
+.quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-lg);
+    color: var(--primary-color);
+}
+.quick-link-card .icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+</style>
+{% endblock %}
